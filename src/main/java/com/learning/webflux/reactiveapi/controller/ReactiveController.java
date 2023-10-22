@@ -20,6 +20,7 @@ public class ReactiveController {
 
     @GetMapping("/userId")
     public Mono<ReactiveResponse> getUser() {
+
         return reactiveService.retrieveGenesResponse().log();
     }
 

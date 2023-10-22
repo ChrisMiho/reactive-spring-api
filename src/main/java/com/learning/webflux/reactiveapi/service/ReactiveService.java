@@ -7,9 +7,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class ReactiveService {
@@ -28,8 +26,8 @@ public class ReactiveService {
 
     public Mono<ReactiveResponse> retrieveGenesResponse(){
         return retrieveGenes()
-                .flatMap(list -> filterList(list))
-                .map(listed -> new ReactiveResponse(listed));
+                .flatMap(list -> filterList(list)).log()
+                .map(listed -> new ReactiveResponse(listed)).log();
 //        return retrieveGenes()
 //                .flatMap(list -> filterList(list))
 //                .flatMap(filteredList -> new );
@@ -38,6 +36,24 @@ public class ReactiveService {
     private Mono<List<CatGene>> filterList(List<CatGene> catGenes) {
         return Mono.just(catGenes.stream().filter(gene -> "firstGen".equals(gene.getGeneration())).toList());
     }
+
+    private Mono<List<CatGene>> filterList2(List<CatGene> catGenes) {
+        return Mono.just(catGenes.stream().filter(gene -> "firstGen".equals(gene.getGeneration())).toList());
+    }
+
+//    private Map<String, List<CatGene>> mapOfMaps(List<CatGene> catGenes){
+//        Map<String, List<CatGene>> firstGen = new HashMap<>();
+//        Map<String, List<CatGene>> secondGen = new HashMap<>();
+//
+//        for(CatGene gene : catGenes){
+//            if("secondGen".equals(gene.getGeneration())){
+//                secondGen.put(gene.getId(), gene);
+//            }
+//        }
+//
+//        return null;
+//
+//    }
 
     private Mono<List<CatGene>> retrieveGenes() {
         return Mono.just(Arrays.asList(
