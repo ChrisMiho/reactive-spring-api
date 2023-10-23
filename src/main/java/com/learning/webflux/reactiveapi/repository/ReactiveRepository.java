@@ -2,7 +2,6 @@ package com.learning.webflux.reactiveapi.repository;
 
 import com.learning.webflux.reactiveapi.model.CatGene;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
@@ -14,7 +13,6 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
-@NoArgsConstructor
 public class ReactiveRepository {
 
     public static final String FIRST_GEN = "firstGen";
