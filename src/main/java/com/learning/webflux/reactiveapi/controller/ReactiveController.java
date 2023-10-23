@@ -1,7 +1,6 @@
 package com.learning.webflux.reactiveapi.controller;
 
 import com.learning.webflux.reactiveapi.model.CatGene;
-import com.learning.webflux.reactiveapi.model.ReactiveResponse;
 import com.learning.webflux.reactiveapi.service.ReactiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,7 @@ public class ReactiveController {
 //    }
 
     @GetMapping("/getV1")
-    public Mono<ReactiveResponse> getFirst() {
+    public Mono<List<CatGene>> getFirst() {
 
         return reactiveService.retrieveGenesResponse().log();
     }

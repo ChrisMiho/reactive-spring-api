@@ -2,7 +2,6 @@ package com.learning.webflux.reactiveapi.service;
 
 import com.learning.webflux.reactiveapi.engine.Engine;
 import com.learning.webflux.reactiveapi.model.CatGene;
-import com.learning.webflux.reactiveapi.model.ReactiveResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
@@ -30,10 +29,9 @@ public class ReactiveService {
 //    }
 
     //onSubscribe([Fuseable] FluxPeekFuseable.PeekFuseableSubscriber)
-    public Mono<ReactiveResponse> retrieveGenesResponse() {
+    public Mono<List<CatGene>> retrieveGenesResponse() {
         return retrieveGenes().cache()
-                .flatMap(this::filterList)
-                .map(ReactiveResponse::new).log();
+                .flatMap(this::filterList);
     }
 
     private Mono<List<CatGene>> filterList(List<CatGene> catGenes) {
