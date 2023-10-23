@@ -28,28 +28,22 @@ public class ReactiveService {
 //                .delayElement(Duration.ofSeconds(2))
 //                .map(m -> new ReactiveResponse(m.toString()));
 //    }
-    // accountKey - id
-    // View -
-    // RT
-    // RSN
-    // APR
-    // V or F
 
     //onSubscribe([Fuseable] FluxPeekFuseable.PeekFuseableSubscriber)
     public Mono<ReactiveResponse> retrieveGenesResponse() {
-        return retrieveGenes()
+        return retrieveGenes().cache()
                 .flatMap(this::filterList)
                 .map(ReactiveResponse::new).log();
+    }
+
+    private Mono<List<CatGene>> filterList(List<CatGene> catGenes) {
+        return Mono.just(catGenes.stream().filter(gene -> FIRST_GEN.equals(gene.getGeneration())).toList());
     }
 
 
     //onSubscribe([Synchronous Fuseable] Operators.ScalarSubscription)
     public Mono<List<CatGene>> retrieveEngineResponse() {
         return engine.geneProcessor(retrieveGenes().cache());
-    }
-
-    private Mono<List<CatGene>> filterList(List<CatGene> catGenes) {
-        return Mono.just(catGenes.stream().filter(gene -> FIRST_GEN.equals(gene.getGeneration())).toList());
     }
 
 //    private Mono<List<CatGene>> filterList2(List<CatGene> catGenes, String filter) {
@@ -70,102 +64,102 @@ public class ReactiveService {
 
     private Mono<List<CatGene>> retrieveGenes() {
         return Mono.just(Arrays.asList(
-                new CatGene(1l, // accountKey
-                        FIRST_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1000l, //APR
+                new CatGene(1l,
+                        FIRST_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1000l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        SECOND_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        SECOND_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        THIRD_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        THIRD_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        FOURTH_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        FOURTH_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        FIRST_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1000l, //APR
+                new CatGene(1l,
+                        FIRST_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1000l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        SECOND_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        SECOND_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        THIRD_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        THIRD_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        FOURTH_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        FOURTH_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        FIRST_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1000l, //APR
+                new CatGene(1l,
+                        FIRST_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1000l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        SECOND_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        SECOND_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        THIRD_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        THIRD_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        FOURTH_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        FOURTH_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        FIRST_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1000l, //APR
+                new CatGene(1l,
+                        FIRST_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1000l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        SECOND_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        SECOND_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        THIRD_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        THIRD_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        FOURTH_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
+                new CatGene(1l,
+                        FOURTH_GEN,
+                        "longhair",
+                        "Main Coon",
+                        1250l, 
                         Date.from(Instant.now()))
-        )).delayElement(Duration.ofSeconds(3));
+        )).delayElement(Duration.ofSeconds(5));
     }
 }

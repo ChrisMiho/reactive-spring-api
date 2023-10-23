@@ -33,14 +33,12 @@ public class Engine {
         return getGeneration(catGenes, Generations.FIRST_GEN)
                 .zipWith(getGeneration(catGenes, Generations.THIRD_GEN),
                         (first, third) ->
-                                Stream.concat(first.stream(), third.stream()).toList());
-//        return firstGen.zipWith(thirdGen, (first, third) ->
-//                Stream.concat(first.stream(), third.stream()).toList());
+                                Stream.concat(first.stream(), third.stream()).toList()).log();
     }
 
     private Mono<List<CatGene>> getGeneration(Mono<List<CatGene>> catGenes, Generations firstGen) {
         return catGenes.flatMap(list -> {
-            return filterList(firstGen.getGeneration(), list);
+            return filterList(firstGen.getGeneration(), list).log();
         });
     }
 
