@@ -2,14 +2,12 @@ package com.learning.webflux.reactiveapi.service;
 
 import com.learning.webflux.reactiveapi.engine.Engine;
 import com.learning.webflux.reactiveapi.model.CatGene;
+import com.learning.webflux.reactiveapi.repository.ReactiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -22,15 +20,17 @@ public class ReactiveService {
     @Autowired
     Engine engine;
 
-//    public Mono<ReactiveResponse> computeMessage() {
-//        return Mono.just("Hello World")
-//                .delayElement(Duration.ofSeconds(2))
-//                .map(m -> new ReactiveResponse(m.toString()));
-//    }
+    @Autowired
+    ReactiveRepository reactiveRepository;
+
+    public Mono<String> computeMessage() {
+        return Mono.just("Hello World")
+                .delayElement(Duration.ofSeconds(2));
+    }
 
     //onSubscribe([Fuseable] FluxPeekFuseable.PeekFuseableSubscriber)
     public Mono<List<CatGene>> retrieveGenesResponse() {
-        return retrieveGenes().cache()
+        return reactiveRepository.retrieveGenes().cache()
                 .flatMap(this::filterList);
     }
 
@@ -41,14 +41,8 @@ public class ReactiveService {
 
     //onSubscribe([Synchronous Fuseable] Operators.ScalarSubscription)
     public Mono<List<CatGene>> retrieveEngineResponse() {
-        return engine.geneProcessor(retrieveGenes().cache());
+        return engine.geneProcessor(reactiveRepository.retrieveGenes().cache());
     }
-
-//    private Mono<List<CatGene>> filterList2(List<CatGene> catGenes, String filter) {
-////        return catGenes.map(list -> list.stream().filter(catGene -> FIRST_GEN.equals(catGene.getGeneration())).toList());
-//        return Mono.from(retrieveGenes());
-//    }
-
 
 //    private Map<String, List<CatGene>> mapOfMaps(List<CatGene> catGenes) {
 //        Map<String, List<CatGene>> masterMap = new HashMap<>();
@@ -59,105 +53,4 @@ public class ReactiveService {
 //        }
 //        return masterMap;
 //    }
-
-    private Mono<List<CatGene>> retrieveGenes() {
-        return Mono.just(Arrays.asList(
-                new CatGene(1l,
-                        FIRST_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1000l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        SECOND_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        THIRD_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        FOURTH_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        FIRST_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1000l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        SECOND_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        THIRD_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        FOURTH_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        FIRST_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1000l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        SECOND_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        THIRD_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        FOURTH_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        FIRST_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1000l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        SECOND_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        THIRD_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now())),
-                new CatGene(1l,
-                        FOURTH_GEN,
-                        "longhair",
-                        "Main Coon",
-                        1250l, 
-                        Date.from(Instant.now()))
-        )).delayElement(Duration.ofSeconds(5));
-    }
 }

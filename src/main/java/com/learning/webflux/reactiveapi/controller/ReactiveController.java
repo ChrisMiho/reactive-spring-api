@@ -15,10 +15,10 @@ public class ReactiveController {
     @Autowired
     ReactiveService reactiveService;
 
-//    @GetMapping("/demo")
-//    public Mono<ReactiveResponse> demo() {
-//        return reactiveService.computeMessage().log();
-//    }
+    @GetMapping("/demo")
+    public Mono<String> demo() {
+        return reactiveService.computeMessage().log();
+    }
 
     @GetMapping("/getV1")
     public Mono<List<CatGene>> getFirst() {
@@ -29,7 +29,7 @@ public class ReactiveController {
     @GetMapping("/getEngine")
     public Mono<List<CatGene>> getEngine() {
 
-        return reactiveService.retrieveEngineResponse();
+        return reactiveService.retrieveEngineResponse().log();
     }
 
 }
