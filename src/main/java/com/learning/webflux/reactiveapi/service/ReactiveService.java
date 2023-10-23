@@ -39,6 +39,7 @@ public class ReactiveService {
     }
 
 
+    //Too much mono
     //onSubscribe([Synchronous Fuseable] Operators.ScalarSubscription)
     public Mono<List<CatGene>> retrieveEngineResponse() {
         return engine.geneProcessor(reactiveRepository.retrieveGenes().cache());

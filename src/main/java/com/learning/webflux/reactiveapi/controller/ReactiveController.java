@@ -26,9 +26,9 @@ public class ReactiveController {
         return reactiveService.retrieveGenesResponse().log();
     }
 
+    //Too much mono
     @GetMapping("/getEngine")
     public Mono<List<CatGene>> getEngine() {
-
         return reactiveService.retrieveEngineResponse().log();
     }
 

@@ -29,6 +29,7 @@ public class Engine {
 
     }
 
+    //Too much mono
     public Mono<List<CatGene>> geneProcessor(Mono<List<CatGene>> catGenes) {
         return getGeneration(catGenes, Generations.FIRST_GEN)
                 .zipWith(getGeneration(catGenes, Generations.THIRD_GEN),
@@ -36,12 +37,14 @@ public class Engine {
                                 Stream.concat(first.stream(), third.stream()).toList()).log();
     }
 
-    private Mono<List<CatGene>> getGeneration(Mono<List<CatGene>> catGenes, Generations firstGen) {
+    //Too much mono
+    private Mono<List<CatGene>> getGeneration(Mono<List<CatGene>> catGenes, Generations inputGen) {
         return catGenes.flatMap(list -> {
-            return filterList(firstGen.getGeneration(), list).log();
+            return filterList(inputGen.getGeneration(), list).log();
         });
     }
 
+    //Too much mono
     private Mono<List<CatGene>> filterList(String generation, List<CatGene> catGenes) {
         return Mono.just(catGenes.stream()
                 .filter(catGene -> generation.equals(catGene.getGeneration()))
