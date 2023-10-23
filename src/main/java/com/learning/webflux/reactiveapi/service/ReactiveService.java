@@ -9,14 +9,19 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @Component
 public class ReactiveService {
 
+    public static final String FIRST_GEN = "firstGen";
+    public static final String SECOND_GEN = "secondGen";
+    public static final String THIRD_GEN = "thirdGen";
+    public static final String FOURTH_GEN = "fourthGen";
     @Autowired
     Engine engine;
-    public static final String FIRST_GEN = "firstGen";
 
 //    public Mono<ReactiveResponse> computeMessage() {
 //        return Mono.just("Hello World")
@@ -30,42 +35,38 @@ public class ReactiveService {
     // APR
     // V or F
 
+    //onSubscribe([Fuseable] FluxPeekFuseable.PeekFuseableSubscriber)
     public Mono<ReactiveResponse> retrieveGenesResponse() {
         return retrieveGenes()
-                .flatMap(list -> filterList(list)).log()
-                .map(listed -> new ReactiveResponse(listed)).log();
-//        return retrieveGenes()
-//                .flatMap(list -> filterList(list))
-//                .flatMap(filteredList -> new );
+                .flatMap(this::filterList)
+                .map(ReactiveResponse::new).log();
     }
 
-//    public Mono<ReactiveResponse> retrieveGenesResponse2() {
-//        return Mono.from(new ReactiveResponse(
-//                        retrieveGenes().flatMap(list -> engine.geneProcessor(list))
-//        )
-//    }
+
+    //onSubscribe([Synchronous Fuseable] Operators.ScalarSubscription)
+    public Mono<List<CatGene>> retrieveEngineResponse() {
+        return engine.geneProcessor(retrieveGenes().cache());
+    }
 
     private Mono<List<CatGene>> filterList(List<CatGene> catGenes) {
         return Mono.just(catGenes.stream().filter(gene -> FIRST_GEN.equals(gene.getGeneration())).toList());
     }
 
-    private Mono<List<CatGene>> filterList2(List<CatGene> catGenes) {
-//        return catGenes.map(list -> list.stream().filter(catGene -> FIRST_GEN.equals(catGene.getGeneration())).toList());
-        return Mono.from(retrieveGenes());
-    }
+//    private Mono<List<CatGene>> filterList2(List<CatGene> catGenes, String filter) {
+////        return catGenes.map(list -> list.stream().filter(catGene -> FIRST_GEN.equals(catGene.getGeneration())).toList());
+//        return Mono.from(retrieveGenes());
+//    }
 
 
-    private Map<String, List<CatGene>> mapOfMaps(List<CatGene> catGenes) {
-        Map<String, List<CatGene>> masterMap = new HashMap<>();
-
-        for (CatGene gene : catGenes) {
-            masterMap.computeIfAbsent(gene.getGeneration(),
-                    g -> new ArrayList<>()).add(gene);
-        }
-
-        return masterMap;
-
-    }
+//    private Map<String, List<CatGene>> mapOfMaps(List<CatGene> catGenes) {
+//        Map<String, List<CatGene>> masterMap = new HashMap<>();
+//
+//        for (CatGene gene : catGenes) {
+//            masterMap.computeIfAbsent(gene.getGeneration(),
+//                    g -> new ArrayList<>()).add(gene);
+//        }
+//        return masterMap;
+//    }
 
     private Mono<List<CatGene>> retrieveGenes() {
         return Mono.just(Arrays.asList(
@@ -76,43 +77,19 @@ public class ReactiveService {
                         1000l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "secondGen", //viewType
+                        SECOND_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "thirdGen", //viewType
+                        THIRD_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "fourthGen", //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
-                        Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        FIRST_GEN, //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1000l, //APR
-                        Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        "secondGen", //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
-                        Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        "thirdGen", //viewType
-                        "longhair", // RT - long hair
-                        "Main Coon", //RSN
-                        1250l, //APR
-                        Date.from(Instant.now())),
-                new CatGene(1l, // accountKey
-                        "fourthGen", //viewType
+                        FOURTH_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
@@ -124,19 +101,19 @@ public class ReactiveService {
                         1000l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "secondGen", //viewType
+                        SECOND_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "thirdGen", //viewType
+                        THIRD_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "fourthGen", //viewType
+                        FOURTH_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
@@ -148,19 +125,43 @@ public class ReactiveService {
                         1000l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "secondGen", //viewType
+                        SECOND_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "thirdGen", //viewType
+                        THIRD_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
                         Date.from(Instant.now())),
                 new CatGene(1l, // accountKey
-                        "fourthGen", //viewType
+                        FOURTH_GEN, //viewType
+                        "longhair", // RT - long hair
+                        "Main Coon", //RSN
+                        1250l, //APR
+                        Date.from(Instant.now())),
+                new CatGene(1l, // accountKey
+                        FIRST_GEN, //viewType
+                        "longhair", // RT - long hair
+                        "Main Coon", //RSN
+                        1000l, //APR
+                        Date.from(Instant.now())),
+                new CatGene(1l, // accountKey
+                        SECOND_GEN, //viewType
+                        "longhair", // RT - long hair
+                        "Main Coon", //RSN
+                        1250l, //APR
+                        Date.from(Instant.now())),
+                new CatGene(1l, // accountKey
+                        THIRD_GEN, //viewType
+                        "longhair", // RT - long hair
+                        "Main Coon", //RSN
+                        1250l, //APR
+                        Date.from(Instant.now())),
+                new CatGene(1l, // accountKey
+                        FOURTH_GEN, //viewType
                         "longhair", // RT - long hair
                         "Main Coon", //RSN
                         1250l, //APR
